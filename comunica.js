@@ -168,9 +168,14 @@ SCREENS['2a'] = () => {
 
   const bar = h('div', { class: 'bar' }, homeB, backB, title,
     h('button', { class: 'btn', 'aria-label': 'Frasi rapide', onclick: openPhrases }, '💬'),
-    h('button', { class: 'btn', 'aria-label': 'Modalità adulto', onclick: async () => { if (await adultGate()) go('3a'); } }, '🔒'));
+    h('button', { class: 'btn', 'aria-label': 'Impostazioni (modalità adulto)', onclick: async () => { if (await adultGate()) go('3a'); } }, '⚙️'));
   const sb = st.sentenceBar ? h('div', { class: 'sbar' }, tiles,
-    h('button', { class: 'btn primary', 'aria-label': 'Parla', onclick: () => { const t = sentenceText(); if (t) { speak(t, st); logUse('s', t); } } }, '▶'),
+    h('button', { class: 'btn primary', 'aria-label': 'Parla', onclick: () => {
+      const t = sentenceText(); if (!t) return;
+      const arr = CM.sent, n = arr.length;
+      logUse('s', t);
+      speak(t, st, st.autoClear ? () => { if (CM.sent === arr) { arr.splice(0, n); drawSentence(); } } : null); // a fine lettura cancella la frase
+    } }, '▶'),
     h('button', { class: 'btn', 'aria-label': 'Cancella ultima', onclick: () => { CM.sent.pop(); drawSentence(); } }, '⌫'),
     h('button', { class: 'btn', 'aria-label': 'Cancella tutto', onclick: () => { CM.sent = []; drawSentence(); } }, '✕')) : null;
   drawSentence(); draw();

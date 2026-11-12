@@ -214,6 +214,7 @@ SCREENS['3f'] = () => {
       chk('Mostra il testo sotto i simboli', st.labels, v => { st.labels = v; save(); }),
       chk('Core fisso: le parole core restano nella stessa posizione in ogni pagina', st.coreFixed, v => { st.coreFixed = v; save(); }),
       chk('Barra frase (le parole si accumulano e si pronunciano con ▶)', st.sentenceBar, v => { st.sentenceBar = v; save(); }),
+      chk('Cancella la frase quando finisce di leggerla', st.autoClear, v => { st.autoClear = v; save(); }),
       chk('Pronuncia ogni parola al tocco', st.speakTap, v => { st.speakTap = v; save(); })),
     h('div', { class: 'card' }, h('h2', null, 'Accesso'),
       fld('Tieni premuto per selezionare', sel('dwell', [[0, 'No: tocco normale'], [300, '0,3 secondi'], [500, '0,5 secondi'], [800, '0,8 secondi'], [1000, '1 secondo'], [1500, '1,5 secondi'], [2000, '2 secondi'], [3000, '3 secondi']], Number), 'Evita i tocchi involontari (tremori, movimenti non controllati).'),

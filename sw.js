@@ -1,5 +1,5 @@
 /* sw.js — funzionamento offline. Cambia VERSIONE ogni volta che aggiorni i file dell'app. */
-const VERSIONE = 'caa-v1';
+const VERSIONE = 'caa-v2';
 const GUSCIO = ['./', 'index.html', 'style.css', 'core.js', 'comunica.js', 'terapista.js', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 const EXT = 'caa-ext';
 

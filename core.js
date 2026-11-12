@@ -85,7 +85,7 @@ window.addEventListener('pagehide', saveNow);
 document.addEventListener('visibilitychange', () => { if (document.hidden) saveNow(); });
 
 function defaultSettings() {
-  return { cols: 4, rows: 3, labels: true, speakTap: true, sentenceBar: true, dwell: 0, contrast: 'normal', font: 'm', voice: '', rate: 0.9, pitch: 1, logUse: true, coreFixed: true, vibrate: false };
+  return { cols: 4, rows: 3, labels: true, speakTap: true, sentenceBar: true, autoClear: true, dwell: 0, contrast: 'normal', font: 'm', voice: '', rate: 0.9, pitch: 1, logUse: true, coreFixed: true, vibrate: false };
 }
 function newState() { return { v: 1, pin: null, recovery: null, profiles: [], last: null, showCodes: true, lastBackup: null }; }
 function newProfile(code) {
@@ -106,7 +106,7 @@ function cleanProfile(p, keepId) {
   s.rate = num(s.rate, 0.5, 1.5, d.rate); s.pitch = num(s.pitch, 0.5, 1.5, 1); s.voice = str(s.voice, 200);
   s.contrast = ['normal', 'high', 'dark'].includes(s.contrast) ? s.contrast : 'normal';
   s.font = ['s', 'm', 'l'].includes(s.font) ? s.font : 'm';
-  ['labels', 'speakTap', 'sentenceBar', 'logUse', 'coreFixed', 'vibrate'].forEach(k => { s[k] = !!s[k]; });
+  ['labels', 'speakTap', 'sentenceBar', 'autoClear', 'logUse', 'coreFixed', 'vibrate'].forEach(k => { s[k] = !!s[k]; });
   q.settings = s;
   const pages = Array.isArray(p.pages) ? p.pages : [];
   q.pages = pages.map(pg => ({
@@ -261,14 +261,21 @@ async function preloadAll() {
 let VOICES = [];
 function loadVoices() { try { VOICES = speechSynthesis.getVoices().filter(v => /^it/i.test(v.lang)); } catch (e) { VOICES = []; } }
 if ('speechSynthesis' in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
-function speak(text, st) {
+function speak(text, st, onend) {
   if (!text) return;
-  if (!('speechSynthesis' in window)) { toast('Questo dispositivo non ha la voce sintetica'); return; }
+  if (!('speechSynthesis' in window)) { toast('Questo dispositivo non ha la voce sintetica'); if (onend) onend(); return; }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'it-IT';
   const v = VOICES.find(x => x.voiceURI === st.voice); if (v) u.voice = v;
   u.rate = st.rate; u.pitch = st.pitch;
+  if (onend) { // chiamata a fine lettura (non se la lettura viene interrotta da un'altra)
+    let done = false;
+    const fin = () => { if (done) return; done = true; onend(); };
+    u.onend = fin;
+    u.onerror = ev => { if (ev && (ev.error === 'interrupted' || ev.error === 'canceled')) { done = true; return; } fin(); };
+    setTimeout(fin, Math.max(10000, text.length * 300)); // rete di sicurezza se il dispositivo non segnala la fine
+  }
   speechSynthesis.speak(u);
 }
 
