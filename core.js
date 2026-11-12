@@ -31,7 +31,8 @@ const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(3
 const fmtDate = t => new Date(t).toLocaleDateString('it-IT');
 const fmtDT = t => new Date(t).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' });
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
-const CREDITS = "Pittogrammi: Sergio Palao per ARASAAC (arasaac.org), Governo d'Aragona — licenza CC BY-NC-SA. Uso non commerciale.";
+const BUILD = 'build 3';
+const CREDITS ="Pittogrammi: Sergio Palao per ARASAAC (arasaac.org), Governo d'Aragona — licenza CC BY-NC-SA. Uso non commerciale.";
 const COLORS = [
   ['none', 'Nessuno', '#ffffff'], ['giallo', 'Pronomi', '#fff3bf'], ['verde', 'Verbi', '#d3f9d8'],
   ['arancio', 'Nomi', '#ffe8cc'], ['blu', 'Aggettivi', '#d0ebff'], ['rosa', 'Sociale / sì-no', '#ffdeeb'],
@@ -269,12 +270,14 @@ function speak(text, st, onend) {
   u.lang = 'it-IT';
   const v = VOICES.find(x => x.voiceURI === st.voice); if (v) u.voice = v;
   u.rate = st.rate; u.pitch = st.pitch;
+  window.__utt = u; // tiene un riferimento: su Android senza questo l'evento di fine lettura può non arrivare mai
   if (onend) { // chiamata a fine lettura (non se la lettura viene interrotta da un'altra)
     let done = false;
     const fin = () => { if (done) return; done = true; onend(); };
     u.onend = fin;
     u.onerror = ev => { if (ev && (ev.error === 'interrupted' || ev.error === 'canceled')) { done = true; return; } fin(); };
-    setTimeout(fin, Math.max(10000, text.length * 300)); // rete di sicurezza se il dispositivo non segnala la fine
+    // rete di sicurezza se il dispositivo non segnala la fine: durata stimata della frase
+    setTimeout(fin, Math.round(text.length * 100 / Math.max(0.5, st.rate)) + 1500);
   }
   speechSynthesis.speak(u);
 }

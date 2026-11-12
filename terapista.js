@@ -395,5 +395,5 @@ SCREENS['3l'] = () => {
       h('p', null, 'I dati restano solo su questo dispositivo, nel browser. Non c\'è nessun server. Fai backup dalla scheda 3k.'),
       h('p', null, 'Per evitare che il bambino esca dall\'app: Android → "Blocco schermo/fissa app"; iPad → "Accesso guidato".'),
       h('p', null, 'Installazione: Chrome → menu ⋮ → "Installa app"; Safari → Condividi → "Aggiungi a Home".'), info),
-    h('div', { class: 'card' }, h('h2', null, 'Crediti e licenza'), h('p', null, CREDITS), h('p', null, 'App CAA — versione 1.0')));
+    h('div', { class: 'card' }, h('h2', null, 'Crediti e licenza'), h('p', null, CREDITS), h('p', null, 'App CAA — versione 1.0 (' + BUILD + ')')));
 };

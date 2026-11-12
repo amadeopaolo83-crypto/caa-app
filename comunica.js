@@ -189,7 +189,11 @@ async function start() {
   migrate();
   await preloadAll();
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* ignora */ }
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => { });
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    const had = !!navigator.serviceWorker.controller; // se c'era già una versione, al cambio ricarico per usare la nuova
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (had) location.reload(); });
+    navigator.serviceWorker.register('sw.js').catch(() => { });
+  }
   cmReset();
   go(P() ? '2a' : '1a', {}, true);
 }
