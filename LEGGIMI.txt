@@ -1,0 +1,39 @@
+APP CAA - versione 1.0
+======================
+
+COME USARLA (gratis, nessun server)
+
+A) Sul PC Windows, subito:
+   1. Estrai la cartella dallo zip.
+   2. Doppio clic su index.html (si apre in Chrome).
+   Funziona, ma non si installa e il PIN/dati restano legati a quel file.
+
+B) Su tablet e telefono (consigliato): GitHub Pages
+   1. Crea un repository GitHub e carica TUTTI i file di questa cartella.
+   2. Settings > Pages > Branch: main > Save.
+   3. Apri l'indirizzo che ti dà GitHub dal tablet.
+   4. Chrome: menu (tre puntini) > "Installa app".  Safari: Condividi > "Aggiungi a Home".
+   Dopo la prima apertura funziona anche senza internet.
+   I dati dei pazienti NON vanno su GitHub: restano nel browser del dispositivo.
+
+PRIMO AVVIO
+   Nuovo profilo > scegli il PIN > scrivi su carta il codice di recupero.
+   Modalita' adulto > Tavole e celle > "Vocabolario iniziale (core)" (serve internet una volta).
+
+AGGIORNAMENTI
+   Quando ti mando file modificati, sostituisci solo quelli.
+   Se cambia un file dell'app, cambia anche VERSIONE in sw.js (la mando io).
+
+FILE
+   index.html, style.css, core.js, comunica.js, terapista.js  = app
+   sw.js, manifest.webmanifest, icon*.png/svg                 = offline e installazione
+
+CODICI SCHEDE (in basso a sinistra, per segnalare le modifiche)
+   1a profili | 1b nuovo/modifica profilo
+   2a tavola (include barra frase e frasi rapide)
+   3a menu adulto | 3b tavole | 3c cella + ricerca simboli | 3e frasi pronte
+   3f impostazioni | 3g registro | 3h note | 3i obiettivi | 3j report
+   3k esporta/importa | 3l info, PIN, crediti
+
+Pittogrammi: Sergio Palao per ARASAAC (arasaac.org), Governo d'Aragona, licenza CC BY-NC-SA.
+Uso solo non commerciale, con citazione della fonte.
